@@ -1,0 +1,8 @@
+#!/bin/sh
+NODE_VER="$(cat .nvmrc)"
+if [[ -f "${HOME}/.nvm/nvm.sh" ]]; then
+  # Normal *nix
+  source "${HOME}/.nvm/nvm.sh"
+fi
+nvm install "$NODE_VER"
+nvm use "$NODE_VER"

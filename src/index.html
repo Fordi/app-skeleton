@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>App Skeleton</title>
+    <base href="/" />
+    <script type="importmap">
+      {
+        "imports": {
+          "preact": "https://unpkg.com/preact/src/index.js",
+          "preact/hooks": "https://unpkg.com/preact/hooks/src/index.js",
+          "preact-router": "https://unpkg.com/preact-router/src/index.js",
+          "htm": "https://unpkg.com/htm/src/index.mjs",
+          "html": "./tools/html.js",
+          "css": "./tools/css.js",
+          "classes": "./tools/classes.js",
+          "asyncComponent": "./tools/asyncComponent.js",
+          "asyncComponents": "./tools/asyncComponents.js",
+          "createI18nContext": "./tools/createI18nContext.js",
+          "apiClient": "./tools/apiClient.js",
+          "importFont": "./tools/importFont.js",
+          "makeResolver": "./tools/makeResolver.js",
+          "useResource": "./tools/useResource.js",
+          "useScheduled": "./tools/useScheduled.js",
+          "useUid": "./tools/useUid.js",
+          "StateMachine": "./tools/StateMachine/index.js",
+          "StateMachine/preact": "./tools/StateMachine/preact.js"
+        }
+      }
+    </script>
+    <style>
+      html {background-color: #fff;}
+      body {opacity: 0; transition: opacity 1s;}
+      body.loaded {opacity: 1;}
+    </style>
+    <link rel="stylesheet" href="./index.css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="App description here"
+    />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="icon" href="favicon.ico" />
+    <title>Bryan Elliott</title>
+    <script defer type="module">
+      import { render } from 'preact';
+      import html from 'html';
+
+      import App from './app.js';
+      
+      render(html`<${App}/>`, document.body);
+      document.body.classList.add('loaded');
+    </script>
+  </head>
+  <body>
+    <noscript>You need to use a modern browser, like Chrome, Firefox, or Edge</noscript>
+  </body>
+</html>

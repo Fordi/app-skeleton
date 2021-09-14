@@ -1,0 +1,14 @@
+{
+  "name": "app-skeleton",
+  "version": "0.0.0",
+  "description": "Zero-build app",
+  "browser": "src/index.html",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "chokidar": "^3.5.2",
+    "express": "^4.17.1"
+  }
+}
