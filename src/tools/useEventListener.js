@@ -1,3 +1,27 @@
+/**
+ * # `useEventListener`
+ * 
+ * ```javascript
+ * useEventListener(window, 'blur', () => {
+ *   console.log('My containing window has blurred');
+ * }, []);
+ * ```
+ * 
+ * Attach a function as an event handler, detatching when the component is removed.  This is
+ * typically for listening on global objects and other DOM elements not already managed by
+ * the component's lifecycle (e.g., `window`, `document.body`, etc).
+ * 
+ * ## Example usage:
+ * 
+ * ```javascript
+ * export default () => {
+ *   const [focused, setFocused] = useState(true);
+ *   useEventListener(window, 'focus', () => setFocused(true), [setFocused]);
+ *   useEventListener(window, 'blur', () => setFocused(false), [setFocused]);
+ *   return html`The window is ${focused ? ' ' : 'not '}focused`;
+ * };
+ * ```
+ */
 import { useEffect, useCallback } from 'preact/hooks';
 
 /**
