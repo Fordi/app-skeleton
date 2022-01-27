@@ -9,6 +9,7 @@ const ACTION_TYPE = ({ async *test() { } }).test.constructor;
 
 export default (initialState, children = {}) => {
   let state = { ...initialState };
+  let logging = false;
   const actions = {};
   const kids = {...children};
   const listeners = {
@@ -26,14 +27,16 @@ export default (initialState, children = {}) => {
       : self.parent.getState(up - 1)
   );
 
-  const act = async iter => {
+  const act = async (iter, name) => {
     const initState = state;
     for await (const newState of iter) {
       const interState = state;
       state = newState;
+      logging && console.info(`[${name} step]`, interState, state);
       announce('step', state, interState);
     }
     const final = (await iter.return()).value;
+    logging && console.info(`[${name} complete]`, initState, state);
     announce('complete', state, initState);
     return final;
   };
@@ -45,7 +48,11 @@ export default (initialState, children = {}) => {
     if (!fn || !fn.name || fn.constructor !== ACTION_TYPE) {
       console.warn('Actions MUST be of the form `async function* actionName() { ... }` or `{ async *actionName() { ... } }`');
     }
-    actions[fn.name] = (...args) => act(fn(self, ...args));
+    actions[fn.name] = (...args) => {
+      logging && console.info(`[${fn.name} init]`, state);
+      const ret = act(fn(self, ...args), fn.name);
+      return ret;
+    };
     return actions[fn.name];
   };
 
@@ -86,8 +93,10 @@ export default (initialState, children = {}) => {
     return value;  
   };
 
+  const log = v => logging = v;
+
   // Public stuff
-  const machine = { getState, act, listen };
+  const machine = { getState, act, listen, log };
 
   // Stuff you'll need for making actions
   const self = { ...machine, machine, action, select };

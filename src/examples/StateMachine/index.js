@@ -11,10 +11,11 @@ import {
   useError,
   // Constants
   PERIOD,
+  // Machines should be named for the state they represent, e.g., 'bill.js'
 } from './myMachine.js';
 import delay from './delay.js';
 
-export default (props) => {
+export default () => {
   // The selector could be more complex, but for now, just dump the state and destruct
   const loadState = useLoadState();
   const guid = useGuid();
