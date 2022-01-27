@@ -1,0 +1,45 @@
+{
+  "_id": "61f2b988e083ece76d127a52",
+  "index": 0,
+  "guid": "2a463986-ed55-4c54-9627-7dd5b5a2cbed",
+  "isActive": false,
+  "balance": "$1,620.07",
+  "picture": "http://placehold.it/32x32",
+  "age": 26,
+  "eyeColor": "blue",
+  "name": "Lula Clayton",
+  "gender": "female",
+  "company": "CRUSTATIA",
+  "email": "lulaclayton@crustatia.com",
+  "phone": "+1 (892) 472-3691",
+  "address": "637 Dewitt Avenue, Aurora, Marshall Islands, 4163",
+  "about": "Incididunt et reprehenderit elit nulla. Consectetur eu adipisicing eu et enim ipsum. Amet officia minim eu minim et reprehenderit labore duis qui magna sit est.\r\n",
+  "registered": "2017-10-29T02:07:12 +04:00",
+  "latitude": -57.237929,
+  "longitude": -66.132717,
+  "tags": [
+    "enim",
+    "sunt",
+    "laborum",
+    "sit",
+    "duis",
+    "velit",
+    "irure"
+  ],
+  "friends": [
+    {
+      "id": 0,
+      "name": "Earline Rivers"
+    },
+    {
+      "id": 1,
+      "name": "Horn Burch"
+    },
+    {
+      "id": 2,
+      "name": "Moran Mullen"
+    }
+  ],
+  "greeting": "Hello, Lula Clayton! You have 2 unread messages.",
+  "favoriteFruit": "apple"
+}

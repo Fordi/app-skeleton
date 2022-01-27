@@ -1,89 +1,22 @@
 /**
  * Think of it like a Redux store, but easier to use.
- *
- * Defining the machine:
  * 
- * ```javascript
- * import StateMachine from 'state-machine';
- * 
- * const myMachine = new StateMachine({
- *   loadState: 'new',
- *   data: null,
- *   error: null,
- *   children: {
- *     // You can define subMachines here
- *     subState: importedMachine,
- *   },
- * });
- * 
- * // A complex action with intermediate work 
- * export const doTheThing = myMachine.action(async function* doTheThing() {
- *   yield { loadState: 'loading', error: null };
- *   try {
- *     // Yield a new result to update the state
- *     yield {
- *       loadState: 'ready',
- *       data: await fetch('/endpoint').then(r => r.json())
- *     };
- *   } catch (error) {
- *     yield {
- *       loadState: 'error',
- *       data: null,
- *       error
- *     };
- *   };
- * });
- * 
- * // The simplest form of action
- * export const reset = myMachine.action(async function* reset() {
- *   return { loadState: 'new', data: null };
- * });
- * 
- * export default myMachine;
- * ```
- *
- * Using the machine:
- * 
- * ```javascript
- * import { useEffect } from 'preact/hooks';
- * import html from 'html';
- * import useSelector from 'StateMachine/useSelector';
- * import { doTheThing } from './myMachine.js';
- * 
- * const MyComponent = (props) => {
- *   // The selector could be more complex, but for now, just dump the state and destruct
- *   const { loadState, data, error } = useSelector(state => state);
- *   // run an action if needed
- *   useEffect(() => {
- *     if (loadState === 'new') {
- *       doTheThing();
- *     }
- *   }, [loadState]);
- * 
- *   // Normal template stuff
- *   if (loadState === 'new' || loadState === 'loading') {
- *     return html`<div className="loading">Loading...</div>`;
- *   }
- *   if (loadState === 'error') {
- *     return html`<div className="error">${error.message}</div>`;
- *   }
- *   return html`<pre>${JSON.strinigfy(data, null, 2)}</pre>`;
- * }
+ * @see /examples/StateMachine/index.js for usage.
  **/
 
-const ACTION_TYPE = (async function*() { }).constructor;
+const ACTION_TYPE = ({ async *test() { } }).test.constructor;
 
-export default function StateMachine(initialState, children = {}) {
+export default (initialState, children = {}) => {
   let state = { ...initialState };
   const actions = {};
-  const children = {};
+  const kids = {...children};
   const listeners = {
     complete: new Set(),
     step: new Set(),
   };
 
   const announce = (type, newState, oldState, path = []) => (
-    listeners[type].forEach(listener => listener(newState, oldState, path))
+    listeners[type].forEach(listener => listener(newState, oldState, type, path))
   );
 
   const getState = (up = 0) => (
@@ -92,21 +25,24 @@ export default function StateMachine(initialState, children = {}) {
       : self.parent.getState(up - 1)
   );
 
-  const act = iterator => {
+  const act = async iter => {
     const initState = state;
-    for await (let newState of iterator) {
+    for await (const newState of iter) {
       const interState = state;
       state = newState;
       announce('step', state, interState);
     }
-    const final = (await iterator.return()).value;
+    const final = (await iter.return()).value;
     announce('complete', state, initState);
     return final;
   };
 
   const action = fn => {
+    if (typeof fn === 'object' && Object.keys(fn).length === 1) {
+      return action(fn[Object.keys(fn)[0]]);
+    }
     if (!fn || !fn.name || fn.constructor !== ACTION_TYPE) {
-      console.warn('Actions MUST be of the form `async function* actionName() { ... }`');
+      console.warn('Actions MUST be of the form `async function* actionName() { ... }` or `{ async *actionName() { ... } }`');
     }
     actions[fn.name] = (...args) => act(fn(self, ...args));
     return actions[fn.name];
@@ -114,7 +50,7 @@ export default function StateMachine(initialState, children = {}) {
 
   const add = (name, child) => {
     child.parent = self;
-    children[name] = machine;
+    kids[name] = machine;
     Object.defineProperty(actions, name, {
       enumerable: true,
       configurable: true, 
@@ -131,17 +67,21 @@ export default function StateMachine(initialState, children = {}) {
   };
 
   const listen = (type, listener) => {
-    listeners[type] && listeners[type].add(listener);
-    return () => (listeners[type] && listeners[type].remove(listener));
+    if (typeof type === 'function') {
+      const unlisteners = ['step', 'complete'].map(t => listen(t, type));
+      return () => unlisteners.forEach(u => u());
+    }
+    listeners[type]?.add(listener);
+    return () => listeners[type]?.delete(listener);
   };
 
   // Public stuff
   const machine = { getState, act, listen };
 
   // Stuff you'll need for making actions
-  const self = { ...machine, machine, action, add };
+  const self = { ...machine, machine, action };
 
-  Object.keys(children).forEach(name => add(name, children[name]));
+  Object.keys(kids).forEach(name => add(name, kids[name]));
 
   return self;
 };
