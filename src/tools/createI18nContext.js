@@ -9,7 +9,7 @@
  *       "es": "En español",
  *       "jp": "日本語で"
  *     },
- *     "Downloaded %% MiB": {
+ *     "Downloaded $$ MiB": {
  *       "es": "Descargado 2.5 MiB",
  *       "jp": "2.5MiBをダウンロード"
  *     }
@@ -22,7 +22,7 @@
  * table, wrap your app with the context, and use the context in your components.
  * 
  * If `keyLang` is set, your keys are the strings you pass in that language,
- * with all template substitutions swapped out for the string '%%' - so it's pretty
+ * with all template substitutions swapped out for the string '$$' - so it's pretty
  * straightforward to migrate to internationalized text.
  * 
  * Also, you'll get warnings on your console for strings that aren't in the table,
@@ -53,9 +53,9 @@
  *       "es": "Has hecho clic una vez",
  *       "jp": "一度クリックしました"
  *     }
- *     "You have clicked %% times": {
- *       "es": "Ha hecho clic %% veces",
- *       "jp": "%%回クリックしました"
+ *     "You have clicked $$ times": {
+ *       "es": "Ha hecho clic $$ veces",
+ *       "jp": "$$回クリックしました"
  *     }
  *   }
  * });
@@ -86,6 +86,47 @@
  *   `;
  * };
  * ```
+ * 
+ * Note, you can also use a classic keying format, so long as your key
+ * contains the necessary substitutions.  As an example, this is equivalent
+ * to the above:
+ * 
+ * ```javascript
+ * const I18N = createI18nContext({
+ *   // English is the default.  Whatever language is here assumes that the string
+ *   //  passed is the correct string for that language.
+ *   keyLang: "en",
+ *   messageTable: {
+ *     notClicked: {
+ *       "en": "You have not clicked",
+ *       "es": "No has hecho clic",
+ *       "jp": "クリックしていません"
+ *     },
+ *     clickedOnce: {
+ *       "en": "You have clicked once",
+ *       "es": "Has hecho clic una vez",
+ *       "jp": "一度クリックしました"
+ *     }
+ *     clicked$$: {
+ *       "en": "You have clicked $$ times",
+ *       "es": "Ha hecho clic $$ veces",
+ *       "jp": "$$回クリックしました"
+ *     }
+ *   }
+ * });
+ * 
+ * const CounterButton = () => {
+ *   const [count, setCount] = useState(0);
+ *   const _ = useContext(I18N);
+ *   return html`
+ *     <button onClick=${() => setCount(count + 1)}>
+ *       ${count === 0 && _`notClicked`}
+ *       ${count === 1 && _`clickedOnce`}
+ *       ${count > 1 && _`clicked${count}`}
+ *     </button>
+ *   `;
+ * };
+ * ```
  */
 
 import { createContext, createElement } from 'preact';
@@ -102,17 +143,17 @@ export default ({ messageTable, keyLang }) => {
     Provider,
     {
       value: (strings, ...subs) => {
-        const id = strings.raw.join('%%');
+        const id = strings.raw.join('$$');
         const lookup = messageTable[id];
         if (!lookup) {
           console.warn(`No i18n entries for "${id}"`);
         } else if (!lookup[language] && language !== keyLang) {
           console.warn(`No ${language} translation for "${id}"`);
         }
-        if ((keyLang && language === keyLang) || !lookup || !lookup[language]) {
+        if ((keyLang && language === keyLang) && !(lookup && lookup[language])) {
           return String.raw(strings, ...subs);
         }
-        return String.raw({ raw: lookup[language].split('%%') }, ...subs);
+        return String.raw({ raw: lookup[language].split('$$') }, ...subs);
       }
     },
     children

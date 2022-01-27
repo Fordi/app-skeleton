@@ -116,6 +116,8 @@ const fetchData = async (url, { body, headers, ...props } = {}) => {
  * @param {RequestDecorator}
  * @return {FetchDataImpl}
  */
-const apiClient = (decorator) => (url, initializer) => fetchData(...decorator(url, initializer));
-
-export default apiClient;
+export default (decorator) => (resource, init) => {
+  const base = { resource, init };
+  const { resource: endpoint, init: initializer } = decorator(base) || base;
+  return fetchData(endpoint, initializer);
+};

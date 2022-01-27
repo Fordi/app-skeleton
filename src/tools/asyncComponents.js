@@ -3,7 +3,7 @@
  * 
  * ```javascript
  *   import asyncComponent from 'asyncComponent';
- *   impott asyncComponents from 'asyncComponents';
+ *   import asyncComponents from 'asyncComponents';
  *   // for importing the default component
  *   const MyComponent = asyncComponent(() => import('./path-to-component.js'), Loading);
  *   // for importing named components, like, from a barrel file

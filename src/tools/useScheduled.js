@@ -27,7 +27,7 @@
  *   `;
  * };
  * ```
-*/
+ */
 import { useEffect } from 'preact/hooks';
 
 export default (fn, timeout = 250) => {
