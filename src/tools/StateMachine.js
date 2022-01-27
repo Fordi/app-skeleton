@@ -1,3 +1,4 @@
+import { useState, useEffect } from "preact/hooks";
 /**
  * Think of it like a Redux store, but easier to use.
  * 
@@ -75,11 +76,21 @@ export default (initialState, children = {}) => {
     return () => listeners[type]?.delete(listener);
   };
 
+  const select = selector => () => {
+    const [value, setValue] = useState(selector(getState()));
+    useEffect(() => listen('step', (newState, oldState) => {
+      const gnu = selector(newState);
+      const old = selector(oldState);
+      if (gnu !== old) setValue(gnu);
+    }), [selector]);
+    return value;  
+  };
+
   // Public stuff
   const machine = { getState, act, listen };
 
   // Stuff you'll need for making actions
-  const self = { ...machine, machine, action };
+  const self = { ...machine, machine, action, select };
 
   Object.keys(kids).forEach(name => add(name, kids[name]));
 

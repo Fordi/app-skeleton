@@ -1,0 +1,1 @@
+export default async t => new Promise(r => setTimeout(r, t));

@@ -23,8 +23,7 @@
           "useResource": "./tools/useResource.js",
           "useScheduled": "./tools/useScheduled.js",
           "useUid": "./tools/useUid.js",
-          "StateMachine": "./tools/StateMachine/index.js",
-          "StateMachine/useSelector": "./tools/StateMachine/useSelector.js"
+          "StateMachine": "./tools/StateMachine.js"
         }
       }
     </script>
@@ -43,8 +42,8 @@
     <script defer type="module">
       import { render } from 'preact';
       import html from 'html';
-      import App from './examples/StateMachine/index.js';
-      // import App from './App.js';
+      // import App from './examples/StateMachine/index.js';
+      import App from './App.js';
       
       render(html`<${App}/>`, document.body);
       document.body.classList.add('loaded');
