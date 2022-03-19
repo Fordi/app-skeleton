@@ -25,20 +25,25 @@ export default () => {
     if (loadState === 'new') {
       // Initial fetch for the machine - but only if it's not fetched before.
       doTheThing();
-    } else if (loadState === 'error') {
+      return;
+    }
+  }, [loadState]);
+  useEffect(() => {
+    if (error) {
       // Wait, then reset (this causes the whole thing to loop)
       delay(PERIOD).then(() => {
         reset();
       });
+      return;
     }
-  }, [loadState]);
+  }, [error]);
 
   // Normal template stuff
+  if (error) {
+    return html`Error: <br /><div className="error">${error.message}</div>`;
+  }
   if (loadState === 'new' || loadState === 'loading') {
     return html`<div className="loading">Loading (${loadState})...</div>`;
-  }
-  if (loadState === 'error') {
-    return html`${loadState}<br /><div className="error">${error.message}</div>`;
   }
   return html`${loadState}<br />${guid}`;
 }

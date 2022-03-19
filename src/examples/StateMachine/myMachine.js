@@ -11,12 +11,12 @@ const myMachine = StateMachine({
 // myMachine.log(true);
 
 // Member functions are context-fixed; this is fine.
-const { action, select } = myMachine;
+const { action, select, useError } = myMachine;
 
 // The simplest form of action
 export const reset = action({
   async *reset() {
-    yield { loadState: 'new', data: undefined };
+    yield { loadState: 'new', data: undefined, error: undefined };
   }
 });
 
@@ -28,22 +28,15 @@ export const doTheThing = action({
   async *doTheThing() {
     await delay(PERIOD);
     yield { loadState: 'loading', error: undefined };
-    try {
-      await delay(PERIOD);
-      // Yield a new result to update the state
-      yield {
-        loadState: 'ready',
-        data: await resourcePromise,
-      };
-      await delay(PERIOD);
-      throw new Error("Intentionally broken");
-    } catch (error) {
-      yield {
-        loadState: 'error',
-        data: undefined,
-        error
-      };
+    await delay(PERIOD);
+    // Yield a new result to update the state
+    yield {
+      loadState: 'ready',
+      data: await resourcePromise,
     };
+    await delay(PERIOD);
+    // Automatic error handling.
+    throw new Error("Intentionally broken");
   },
 });
 
@@ -51,7 +44,7 @@ export const doTheThing = action({
 // Selectors should be named like hooks; e.g., `useDataPoint`
 export const useLoadState = select(({ loadState }) => loadState);
 export const useGuid = select(({ data: { guid } = {} }) => guid);
-export const useError = select(({ error }) => error);
+export { useError };
 
 // You probably _don't_ want to do this in production code:
 export const useMachineState = select(state => state);

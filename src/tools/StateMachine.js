@@ -29,11 +29,20 @@ export default (initialState, children = {}) => {
 
   const act = async (iter, name) => {
     const initState = state;
-    for await (const newState of iter) {
+    try {
+      for await (const newState of iter) {
+        const interState = state;
+        state = newState;
+        logging && console.info(`[${name} step]`, interState, state);
+        announce('step', state, interState);
+      }
+    } catch (error) {
       const interState = state;
-      state = newState;
-      logging && console.info(`[${name} step]`, interState, state);
+      state = { ...state, error };
+      logging && console.warn('Error in machine: ', error);
       announce('step', state, interState);
+      announce('complete', state, initState);
+      return state;
     }
     const final = (await iter.return()).value;
     logging && console.info(`[${name} complete]`, initState, state);
@@ -93,10 +102,12 @@ export default (initialState, children = {}) => {
     return value;  
   };
 
+  const useError = select(({ error }) => error);
+
   const log = v => logging = v;
 
   // Public stuff
-  const machine = { getState, act, listen, log };
+  const machine = { getState, act, listen, log, useError };
 
   // Stuff you'll need for making actions
   const self = { ...machine, machine, action, select };
