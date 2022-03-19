@@ -8,7 +8,7 @@ const myMachine = StateMachine({
 });
 
 // Enable transition logging
-// myMachine.log(true);
+myMachine.log(true);
 
 // Member functions are context-fixed; this is fine.
 // `useError` is automatically created to select the `error` field.
@@ -21,9 +21,6 @@ export const reset = action({
   }
 });
 
-// This is all mockery, so just fetch the once.  Normally, you'd put this inside the action.
-const resourcePromise = fetch('/examples/StateMachine/sample.json').then(r => r.json());
-
 // Actions should be named like verbs
 export const doTheThing = action({
   async *doTheThing() {
@@ -33,7 +30,7 @@ export const doTheThing = action({
     // Yield a new result to update the state
     yield {
       loadState: 'ready',
-      data: await resourcePromise,
+      data: await fetch('/examples/StateMachine/sample.json').then(r => r.json()),
     };
     await delay(PERIOD);
     // Automatic error handling; thrown errors become the field `error` on the state
@@ -45,6 +42,7 @@ export const doTheThing = action({
 // Selectors should be named like hooks; e.g., `useDataPoint`
 export const useLoadState = select(({ loadState }) => loadState);
 export const useGuid = select(({ data: { guid } = {} }) => guid);
+// Remember to export `useError` so consumers have access to it.
 export { useError };
 
 // You probably _don't_ want to do this in production code:
