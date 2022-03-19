@@ -35,7 +35,7 @@ export const doTheThing = action({
       data: await resourcePromise,
     };
     await delay(PERIOD);
-    // Automatic error handling.
+    // Automatic error handling; thrown errors become the field `error` on the state
     throw new Error("Intentionally broken");
   },
 });
