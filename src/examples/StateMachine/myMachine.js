@@ -11,6 +11,7 @@ const myMachine = StateMachine({
 // myMachine.log(true);
 
 // Member functions are context-fixed; this is fine.
+// `useError` is automatically created to select the `error` field.
 const { action, select, useError } = myMachine;
 
 // The simplest form of action
