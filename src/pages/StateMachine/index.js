@@ -1,5 +1,6 @@
 import { useEffect } from 'preact/hooks';
 import html from 'html';
+import { Back } from 'PathRouter';
 
 import {
   // Actions
@@ -15,7 +16,7 @@ import {
 } from './myMachine.js';
 import delay from './delay.js';
 
-export default () => {
+const Example = () => {
   // The selector could be more complex, but for now, just dump the state and destruct
   const loadState = useLoadState();
   const guid = useGuid();
@@ -46,4 +47,10 @@ export default () => {
     return html`<div className="loading">Loading (${loadState})...</div>`;
   }
   return html`${loadState}<br />${guid}`;
-}
+};
+
+export default () => html`
+  <${Example} />
+  <br />
+  <${Back}>Back</>
+`;
