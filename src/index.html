@@ -24,7 +24,8 @@
           "useScheduled": "./tools/useScheduled.js",
           "useParamState": "./tools/useParamState.js",
           "useUid": "./tools/useUid.js",
-          "StateMachine": "./tools/StateMachine.js"
+          "StateMachine": "./tools/StateMachine.js",
+          "PathRouter": "./tools/PathRouter.js"
         }
       }
     </script>
@@ -40,15 +41,7 @@
       name="description"
       content="App description here"
     />
-    <script defer type="module">
-      import { render } from 'preact';
-      import html from 'html';
-      // import App from './examples/StateMachine/index.js';
-      import App from './App.js';
-      
-      render(html`<${App}/>`, document.body);
-      document.body.classList.add('loaded');
-    </script>
+    <script defer type="module" src="./index.js"></script>
   </head>
   <body>
     <noscript>You need to use a modern browser, like Chrome, Firefox, or Edge</noscript>

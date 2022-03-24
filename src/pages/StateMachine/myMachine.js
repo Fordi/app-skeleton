@@ -30,7 +30,7 @@ export const doTheThing = action({
     // Yield a new result to update the state
     yield {
       loadState: 'ready',
-      data: await fetch('/examples/StateMachine/sample.json').then(r => r.json()),
+      data: await fetch('/pages/StateMachine/sample.json').then(r => r.json()),
     };
     await delay(PERIOD);
     // Automatic error handling; thrown errors become the field `error` on the state
