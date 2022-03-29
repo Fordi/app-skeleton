@@ -1,4 +1,4 @@
-Simple htm+preact app template
+Simple no-build htm+(React|Preact) app template
 
 ### Requirements
 
