@@ -8,9 +8,14 @@
         "imports": {
           "preact": "https://unpkg.com/preact/src/index.js",
           "preact/hooks": "https://unpkg.com/preact/hooks/src/index.js",
-          "preact-router": "https://cdn.jsdelivr.net/npm/preact-router/dist/preact-router.module.js",
-          "preact-router/match": "https://cdn.jsdelivr.net/npm/preact-router/match/index.module.js",
           "htm": "https://unpkg.com/htm/src/index.mjs",
+          "react:cjs": "https://unpkg.com/react/umd/react.development.js",
+          "react-dom:cjs": "https://unpkg.com/react-dom/umd/react-dom.development.js",
+          "react": "./tools/react.js",
+          "react-dom": "./tools/react-dom.js",
+          "reactor/preact": "./tools/reactor-preact.js",
+          "reactor/react": "./tools/reactor-react.js",
+          "reactor": "./tools/reactor.js",
           "html": "./tools/html.js",
           "css": "./tools/css.js",
           "classes": "./tools/classes.js",
@@ -44,6 +49,7 @@
     <script defer type="module" src="./index.js"></script>
   </head>
   <body>
+    <div id="root"></div>
     <noscript>You need to use a modern browser, like Chrome, Firefox, or Edge</noscript>
   </body>
 </html>

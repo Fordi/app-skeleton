@@ -22,6 +22,7 @@
  * `;
  * ```
  */
+import css from './css.js';
 const order = ['embedded-opentype', 'woff2', 'woff', 'truetype', 'svg'];
 const extMap = { ttf: 'truetype', eot: 'embedded-opentype' };
 

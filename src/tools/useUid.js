@@ -24,7 +24,7 @@
  * };
  * ```
  */
-import { useState } from 'preact/hooks';
+import { useState } from './reactor.js';
 
 export default (prefix = '') => {
   const [uid] = useState(() => `${prefix}_${Math.random().toString(36).substr(2)}`);

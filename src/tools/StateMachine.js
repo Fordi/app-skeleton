@@ -1,4 +1,5 @@
-import { useState, useEffect } from "preact/hooks";
+import { useState, useEffect } from './reactor.js';
+
 /**
  * Think of it like a Redux store, but easier to use.
  * 

@@ -1,12 +1,17 @@
-import html from 'html';
-import { h, createContext } from 'preact';
-import { useState, useEffect, useCallback, useContext } from 'preact/hooks';
+import {
+  createElement,
+  createContext,
+  useState,
+  useEffect,
+  useCallback,
+  useContext,
+} from './reactor.js';
 
-const DefaultLoading = () => h('div', { class: 'loading' }, 'Loading...');
-const DefaultError = ({ error }) => h('div', { class: 'error' },
-  h('h1', null, error.type || error.constructor.name),
+const DefaultLoading = () => createElement('div', { className: 'loading' }, 'Loading...');
+const DefaultError = ({ error }) => createElement('div', { className: 'error' },
+  createElement('h1', null, error.type || error.constructor.name),
   error.message,
-  h('pre', null, error.stack),
+  createElement('pre', null, error.stack),
 );
 
 const imported = {};
@@ -33,7 +38,7 @@ export const Link = ({ to, children }) => {
     e.preventDefault();
     return false;
   }, [to]);
-  return h('a', { onClick, href: to }, children);
+  return createElement('a', { onClick, href: to }, children);
 };
 
 /**
@@ -49,7 +54,7 @@ export const Link = ({ to, children }) => {
     e.preventDefault();
     return false;
   }, []);
-  return h('a', { onClick, href: '#back' }, children);
+  return createElement('a', { onClick, href: '#back' }, children);
 };
 
 const normPath = href => new URL(href, window.origin).pathname.replace(/^\//, '');
@@ -152,7 +157,7 @@ export const PathRouter = ({
       const url = `${route}.js`;
       import(url).then(imports => {
         if (!imports.default) {
-          setComponent(() => () => h(Error, { error: new Error(`Bad route: ${route} does not have a default export`) }));
+          setComponent(() => () => createElement(Error, { error: new Error(`Bad route: ${route} does not have a default export`) }));
         } else {
           imported[route] = imports.default;
           setComponent(() => imported[route]);
@@ -160,14 +165,14 @@ export const PathRouter = ({
       })
       .catch(error => {
         if (error.constructor === TypeError && /import/.test(error.message)) {
-          setComponent(() => () => h(Error, {
+          setComponent(() => () => createElement(Error, {
             error: Object.assign(new Error('Not Found'), {
               status: 404,
               stack: `404 Not Found: ${url}`,
             })
           }));
         } else {
-          setComponent(() => () => h(Error, { 
+          setComponent(() => () => createElement(Error, { 
             error: Object.assign(error, { 
               // Add source to tail of stack.
               stack: error.stack.split('\n').length === 1 ? [error.stack, `    in ${url}`].join('\n') : error.stack,
@@ -179,8 +184,8 @@ export const PathRouter = ({
     }
   }, [location, matcher]);
 
-  return h(RouteContext.Provider, { value: { setLocation } },
-    h(Component, props),
+  return createElement(RouteContext.Provider, { value: { setLocation } },
+    createElement(Component, props),
   );
 };
 

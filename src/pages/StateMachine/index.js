@@ -1,4 +1,4 @@
-import { useEffect } from 'preact/hooks';
+import { useEffect } from 'reactor';
 import html from 'html';
 import { Back } from 'PathRouter';
 
@@ -41,12 +41,12 @@ const Example = () => {
 
   // Normal template stuff
   if (error) {
-    return html`Error: <br /><div className="error">${error.message}</div>`;
+    return html`<div>Error: <br /><div className="error">${error.message}</div></div>`;
   }
   if (loadState === 'new' || loadState === 'loading') {
     return html`<div className="loading">Loading (${loadState})...</div>`;
   }
-  return html`${loadState}<br />${guid}`;
+  return html`<div>${loadState}<br />${guid}</div>`;
 };
 
 export default () => html`

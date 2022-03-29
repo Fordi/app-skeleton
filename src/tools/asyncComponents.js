@@ -62,10 +62,8 @@
  * If `Loading` is omitted, the null component (`() => null`) is used instead.
  * 
  */
-
-import { createElement } from 'preact';
-import { useEffect, useState } from 'preact/hooks';
-
+ import { createElement, useState, useEffect } from './reactor.js';
+ 
 export default (promisor, Loading = Blank) => {
   let cachedPromise = null;
   return new Proxy({}, {

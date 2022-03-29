@@ -128,9 +128,8 @@
  * };
  * ```
  */
-
-import { createContext, createElement } from 'preact';
-
+ import { createElement, createContext } from './reactor.js';
+ 
 const BROWSER_LANG = navigator.language.split('-')[0];
 
 export default ({ messageTable, keyLang }) => {

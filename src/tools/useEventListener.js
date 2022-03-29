@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'preact/hooks';
+import { useEffect, useCallback } from './reactor.js';
 
 /**
  * Attach a function as an event listener, detatching if the component is removed.

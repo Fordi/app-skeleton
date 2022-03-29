@@ -24,8 +24,12 @@
  * };
  * ```
  */
-import { useState, useEffect } from "preact/hooks";
-import useEventListener from './useEventListener.js';
+import { useEventListener } from './reactor.js';
+
+const {
+  useState,
+  useEffect,
+} = getReactor();
 
 const { stringify, parse } = JSON;
 

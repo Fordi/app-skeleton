@@ -115,9 +115,7 @@
  * Note that `fetch` does _not_ return an error on a non-OK HTTP code.  You have
  * to detect and handle that sort of thing yourself.  Ideally, you'd be using [`apiClient`](./apiClient.md).
  */
-
-import { useState, useEffect } from 'preact/hooks';
-
+import { useState, useEffect } from './reactor.js';
 import Cache from './useResource/Cache.js';
 
 const cache = Cache();

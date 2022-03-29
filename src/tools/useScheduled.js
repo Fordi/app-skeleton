@@ -28,7 +28,7 @@
  * };
  * ```
  */
-import { useEffect } from 'preact/hooks';
+import { useEffect } from './reactor.js';
 
 export default (fn, timeout = 250) => {
   let handle = null;
