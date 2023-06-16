@@ -30,7 +30,6 @@ try {
 const resources = process.argv.slice(2);
 const deps = [...resources.reduce((s, item) => {
   const [_, scope, pkg, path, version] = item.match(/^(?:(@[a-zA-Z\-0-9_]+)\/)?([a-zA-Z\-0-9_]+)(?:\/(.*))?(?:(@[^~]?[0-9\.]+))?$/) || [];
-  console.log({ item, scope, pkg, path, version })
   const packageName = [scope, pkg].filter(a => !!a).join('/');
   if (packageName) {
     s.add(packageName + (version || ''));
@@ -53,6 +52,7 @@ const importMap = JSON.parse(html.substring(importMapStart, importMapEnd));
 
 await sh(`npm i -D ${deps.join(' ')}`);
 await mkdir('./tmp', { recursive: true });
+await mkdir('./src/vendor', { recursive: true });
 
 await Promise.all(resources.map(async (resource) => {
   const res = resource.replace(/@[^~]?[\d\.]+$/, '');
