@@ -10,9 +10,9 @@
   },
   "license": "ISC",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^25.0.1",
-    "@rollup/plugin-node-resolve": "^15.1.0",
-    "chokidar": "^3.5.2",
-    "express": "^4.17.1"
+    "@rollup/plugin-commonjs": "^25.0.4",
+    "@rollup/plugin-node-resolve": "^15.2.1",
+    "chokidar": "^3.5.3",
+    "express": "^4.18.2"
   }
 }
